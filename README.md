@@ -22,7 +22,7 @@ once done, clone this repo inside catkin_ws/src,
 open new terminal and enter following command,
 ```
 export GAZEBO_RESOURCE_PATH=~/catkin_ws/src/iq_sim/worlds/
-roslaunch husky_gazebo husky_empty_world.launch world_name:=hill.world
+roslaunch husky_gazebo husky_empty_world.launch world_name:=robo.world
 ```
 Now gazebo should be launched, and a world consisting of rover, drone should be visible
 open new terminal,
