@@ -2,7 +2,14 @@
 
 Firstly install ROS melodic,gazebo, SITL,ardupilot-gazebo link
 
-
+For ardupilot
+'''
+https://ardupilot.org/dev/docs/building-setup-linux.html#building-setup-linux
+'''
+For ardupilot-gazebo link
+'''
+https://github.com/khancyr/ardupilot_gazebo
+'''
 Now install Husky gazebo(the rover gazebo package) using, (http://wiki.ros.org/husky_gazebo/Tutorials/Simulating%20Husky)
 
 # Setup catkin ws
