@@ -1,51 +1,71 @@
 # Robotics-Project
 
-Firstly install ROS melodic,gazebo, SITL,ardupilot-gazebo link
+## Dependencies
 
-For ardupilot
-```
-https://ardupilot.org/dev/docs/building-setup-linux.html#building-setup-linux
-```
-For ardupilot-gazebo link
-```
-https://github.com/khancyr/ardupilot_gazebo
-```
-Now install Husky gazebo(the rover gazebo package) using, (http://wiki.ros.org/husky_gazebo/Tutorials/Simulating%20Husky)
+- ROS-melodic
+- Gazebo
+- SITL
+- Ardupilot-gazebo link
+- [The Husky Rover gazebo package](http://wiki.ros.org/husky_gazebo/Tutorials/Simulating%20Husky)
 
-## Add the Open Gazebo Models Database
+Install Ardupilot from [here](https://ardupilot.org/dev/docs/building-setup-linux.html#building-setup-linux)
 
-Use git to get a bunch of open source gazebo models from the Open Source Robotics Foundation (OSRF) 
+Setup ardupilot-gazebo link from [here](https://github.com/khancyr/ardupilot_gazebo)
 
-```
-git clone https://github.com/osrf/gazebo_models.git
-```
-Add Models path to the bashrc
-```
-echo 'export GAZEBO_MODEL_PATH=~/gazebo_ws/gazebo_models:${GAZEBO_MODEL_PATH}' >> ~/.bashrc
-source ~/.bashrc
-```
+## Setup catkin workspace
 
-# Setup catkin ws
-To start working with ros, you need to setup ROS workspace using catkin.
-```
-open terminal
-mkdir -p catkin_ws/src
-cd catkin_ws
+To start working with ros, you need to setup ROS workspace using catkin. Open up a terminal to setup the base directory.
+
+```bash
+mkdir -p ~/catkin_ws/src
+cd ~/catkin_ws
 catkin_make
 ```
 
-once done, clone this repo inside catkin_ws/src,
-`git clone https://github.com/akj127/Robotics-project`
+Once done, clone this repo inside catkin_ws/src,
 
-# Initiate animation in gazebo
-
-open new terminal and enter following command,
+```bash
+cd ~/catkin_ws/src
+git clone https://github.com/akj127/Robotics-project
 ```
+
+## Import models
+
+### Add the Open Gazebo Models Database
+
+Use git to get a bunch of open source gazebo models from the Open Source Robotics Foundation (OSRF) 
+
+Also, add the models directory to the `GAZEBO_MODEL_PATH`
+
+```bash
+cd ~/
+git clone https://github.com/osrf/gazebo_models.git
+echo 'export GAZEBO_MODEL_PATH=~/gazebo_models:${GAZEBO_MODEL_PATH}' >> ~/.bashrc
+source ~/.bashrc
+```
+
+### Import the new Husky model (with the Aruco marker)
+
+The new Husky model can be found in the `models` directory of this repo. Simply replace the original Husky model with this updated model. To do that you would need sudo priveleges
+
+```bash
+sudo cp ~/catkin_ws/src/Robotics-project/models/tagged_husky/husky.urdf.xacro $(catkin_find husky_description/urdf)/
+```
+
+Model taken from [here](https://github.com/mzahana/mavros_apriltag_tracking)
+
+## Initiate animation in gazebo
+
+Open a new terminal and enter following command,
+
+```bash
 export GAZEBO_RESOURCE_PATH=~/catkin_ws/src/Robotics-project/worlds/
 roslaunch husky_gazebo husky_empty_world.launch world_name:=robo.world
 ```
+
 Now gazebo should be launched, and a world consisting of rover, drone should be visible
 open new terminal,
-```
+
+```bash
 sim_vehicle.py -v ArduCopter -f gazebo-iris --console --map
 ```
