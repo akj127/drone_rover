@@ -30,9 +30,10 @@ class controller:
 			errorx = ex
 	      		errory = ey
       			ti = i
+			
 		print(out_x,out_y)
-  
 
+		
 c = controller(1,2,3)
 c.get_coordinates(4,5,6,7,10)
 
