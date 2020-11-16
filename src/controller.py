@@ -1,5 +1,3 @@
-import numpy as np
-
 class controller:
 
 	def _init_(self,k1,k2,k3):
@@ -36,4 +34,3 @@ class controller:
 		
 c = controller(1,2,3)
 c.get_coordinates(4,5,6,7,10)
-
