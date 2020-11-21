@@ -34,6 +34,6 @@ class controller:
 	      	self.prev_ex = ey
       		self.ti = t
 			
-		print(out_x,out_y)
+	
 
 		
