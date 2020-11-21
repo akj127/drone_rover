@@ -1,36 +1,39 @@
 class controller:
 
-	def _init_(self,k1,k2,k3):
+	def _init_(self,k1,k2,k3,xd,yd,xr,yr):
 		self.kd = k1
 	    	self.ki = k2
 	    	self.kp = k3
+	    	self.xd=  xd
+	    	self.xr=  xr
+	    	self.yd = yd
+	    	self.yr=  yr
+	    	self.x_integ=0
+	    	self.y_integ=0
+	    	self.ti=0
+	    	self.prev_ex=0
+	    	self.prev_ey=0
 
-	def get_coordinates(self,xd,yd,xr,yr,t):
-		errorx = xd-xr
-    		errory = yd-yr
-	    	x_integ = 0
-    		y_integ = 0
-	    	ti = 0
-        
-    		for i in range(1,t):   
-			ex = xr-xd
-        		ey = yr-yd
+	def get_coordinates(self,t):
+	
+	 
 
-    	  		x_integ += ex*(i-ti)
-    	  		y_integ += ey*(i-ti)
+		ex = self.xr-self.xd
+        	ey = self.yr-self.yd
+
+    	  	self.x_integ += ex*(t-ti)
+    	  	self.y_integ += ey*(t-ti)
           
-    	  		edotx = (ex-errorx)/(i-ti)
-    	  		edoty = (ey-errory)/(i-ti)
+    	  	edotx = (ex-self.prev_ex)/(t-ti)
+    	  	edoty = (ey-self.prev_ey)/(t-ti)
           
-    	  		out_x = self.kp*(ex)+self.ki*(x_integ)+self.kd*(edotx)
-    	  		out_y = self.kp*(ey)+self.ki*(y_integ)+self.kd*(edoty)
+    	  	out_x = self.kp*(ex)+self.ki*(self.x_integ)+self.kd*(edotx)
+    	  	out_y = self.kp*(ey)+self.ki*(self.y_integ)+self.kd*(edoty)
           
-			errorx = ex
-	      		errory = ey
-      			ti = i
+		self.prev_ex= ex
+	      	self.prev_ex = ey
+      		self.ti = t
 			
 		print(out_x,out_y)
 
 		
-c = controller(1,2,3)
-c.get_coordinates(4,5,6,7,10)
