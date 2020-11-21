@@ -31,7 +31,7 @@ class controller:
     	  	out_y = self.kp*(ey)+self.ki*(self.y_integ)+self.kd*(edoty)
           
 		self.prev_ex= ex
-	      	self.prev_ex = ey
+	      	self.prev_ey = ey
       		self.ti = t
 			
 	
