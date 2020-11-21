@@ -21,11 +21,11 @@ class controller:
 		ex = self.xr-self.xd
         	ey = self.yr-self.yd
 
-    	  	self.x_integ += ex*(t-ti)
-    	  	self.y_integ += ey*(t-ti)
+    	  	self.x_integ += ex*(t-self.ti)
+    	  	self.y_integ += ey*(t-self.ti)
           
-    	  	edotx = (ex-self.prev_ex)/(t-ti)
-    	  	edoty = (ey-self.prev_ey)/(t-ti)
+    	  	edotx = (ex-self.prev_ex)/(t-self.ti)
+    	  	edoty = (ey-self.prev_ey)/(t-self.ti)
           
     	  	out_x = self.kp*(ex)+self.ki*(self.x_integ)+self.kd*(edotx)
     	  	out_y = self.kp*(ey)+self.ki*(self.y_integ)+self.kd*(edoty)
