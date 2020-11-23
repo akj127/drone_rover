@@ -383,14 +383,14 @@ if __name__ == '__main__':
     tracker = Tracker()
 
     loop = rospy.Rate(10)
-     
-    K = PositionController()
+     # Should be created outside ROS while loop 
+    K = Controller()
 
     while not rospy.is_shutdown():
 
     
     #Example of how to use the PositionController
-        # Should be created outside ROS while loop
+       
         
         # The following should be inside ROS while loop
         # update errors
