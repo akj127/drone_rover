@@ -90,7 +90,7 @@ class Controller:
 
     def computeVelSetpoint(self):
         """
-        Computes XYZ velocity setpoint in body sudo-frame using a PI controller
+        Computes XY velocity setpoint in body sudo-frame using a PI controller
         """
         # Compute commands
         self.body_vx_cmd_ = self.kP_xy_*self.ex_ + self.kI_xy_*self.ex_int_
@@ -147,12 +147,6 @@ class Commander:
         # setpoint publisher (velocity to Pixhawk)
         self.setpoint_pub_ = rospy.Publisher('mavros/setpoint_raw/local', PositionTarget, queue_size=10)
 
-        # Subscriber for user setpoints (body velocity)
-        #rospy.Subscriber('setpoint/body_vel', Vector3, self.velSpCallback)
-
-        # Subscriber for user setpoints (local position)
-        #rospy.Subscriber('setpoint/local_pos', Point, self.posSpCallback)
-
         # Subscriber for user setpoints (yaw in degrees)
         rospy.Subscriber('setpoint/yaw_deg', Float32, self.yawSpCallback)
 
@@ -166,21 +160,11 @@ class Commander:
         rospy.Subscriber('mavros/local_position/velocity_local', TwistStamped, self.localVelCallback)
 
         # Service for arming and setting OFFBOARD flight mode
-        rospy.Service('arm_and_offboard', Empty, self.armAndOffboard)
+        #rospy.Service('arm_and_offboard', Empty, self.armAndOffboard)
 
         # Service for autoland
-        rospy.Service('auto_land', Empty, self.autoLand)
+       # rospy.Service('auto_land', Empty, self.autoLand)
 
-        # Service for holding at current position
-        # rospy.Service('hold', Empty, self.hold)
-
-    # def hold(self, req):
-    #     self.pos_setpoint_.x = self.drone_pos_.x
-    #     self.pos_setpoint_.y = self.drone_pos_.y
-    #     self.pos_setpoint_.z = self.drone_pos_.z
-
-    #     self.setLocalPositionMask()
-    #     return EmptyResponse()
 
     def bodyVelCallback(self, msg):
         self.body_vel_ = msg
@@ -188,16 +172,16 @@ class Commander:
     def localVelCallback(self, msg):
         self.local_vel_ = msg
 
-    def autoLand(self, req):
-        self.fcu_mode_.setAutoLandMode()
+    #def autoLand(self, req):
+     #   self.fcu_mode_.setAutoLandMode()
 
-        return EmptyResponse()
+      #  return EmptyResponse()
 
-    def armAndOffboard(self, req):
-        self.fcu_mode_.setArm()
-        self.fcu_mode_.setOffboardMode()
+   # def armAndOffboard(self, req):
+    #    self.fcu_mode_.setArm()
+     #   self.fcu_mode_.setOffboardMode()
         
-        return EmptyResponse()
+      #  return EmptyResponse()
 
     def dronePosCallback(self, msg):
         self.drone_pos_.x = msg.pose.position.x
