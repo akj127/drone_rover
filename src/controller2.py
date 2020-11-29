@@ -14,7 +14,7 @@ from std_srvs.srv import Empty, EmptyResponse
 from geometry_msgs.msg import Vector3, Point, PoseStamped, TwistStamped, PointStamped
 from mavros_msgs.msg import PositionTarget, State
 from mavros_msgs.srv import CommandBool, SetMode
-from mavros_apriltag_tracking.srv import PIDGains, PIDGainsResponse
+from roover.srv import PIDGains, PIDGainsResponse
 
 
 
@@ -394,6 +394,8 @@ if __name__ == '__main__':
         
         # The following should be inside ROS while loop
         # update errors
+        relative_position_in_x = 5
+        relative_position_in_y = 5
         K.ex = relative_position_in_x # body directions
         K.ey = relative_position_in_y
     
