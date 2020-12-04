@@ -59,7 +59,7 @@ Model taken from [here](https://github.com/mzahana/mavros_apriltag_tracking)
 Open a new terminal and enter following command,
 
 ```bash
-export GAZEBO_RESOURCE_PATH=~/catkin_ws/src/Robotics-project/worlds/
+export GAZEBO_RESOURCE_PATH=~/catkin_ws/src/drone_rover/worlds/
 roslaunch husky_gazebo husky_empty_world.launch world_name:=robo.world
 ```
 
