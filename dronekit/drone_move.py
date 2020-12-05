@@ -24,7 +24,7 @@ dictionary = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_250)
 # Initialize the detector parameters using default values
 parameters = cv2.aruco.DetectorParameters_create()
 
-controller = Controller(0.001, 0.001, 0.001)
+controller = Controller(ki=0.002, kp=0.003)
 
 
 def get_aruco_center(cv_image, parameters, dictionary):
@@ -35,21 +35,29 @@ def get_aruco_center(cv_image, parameters, dictionary):
 
     markerCorners, markerIds, rejectedCandidates = cv2.aruco.detectMarkers(
         cv_image, dictionary, parameters=parameters)
+    found_flag = False
 
     try:
         bottom_left_corner = tuple(markerCorners[0][0][0])
         top_right_corner = tuple(markerCorners[0][0][2])
+
+        rover_x = (bottom_left_corner[0] + top_right_corner[0]) / 2
+        rover_y = (bottom_left_corner[1] + top_right_corner[1]) / 2
+
+        rover_x = center_x - rover_x
+        rover_y = center_y - rover_y
+
+        found_flag = True
     except IndexError:
-        bottom_left_corner = [center_x, center_y]
-        top_right_corner = [center_x, center_y]
+        print("Out of range!!")
+        rover_x = 5000
+        rover_y = 5000
 
-    rover_x = (bottom_left_corner[0] + top_right_corner[0]) / 2
-    rover_y = (bottom_left_corner[1] + top_right_corner[1]) / 2
+        found_flag = False
 
-    rover_x = center_x - rover_x
-    rover_y = center_y - rover_y
+    rover_x = -1 * rover_x
 
-    return rover_x, rover_y
+    return rover_x, rover_y, found_flag
 
 
 def getImage(in_image):
@@ -57,11 +65,16 @@ def getImage(in_image):
     global bridge
     cv_image = bridge.imgmsg_to_cv2(in_image, "bgr8")
 
-    rover_x, rover_y = get_aruco_center(cv_image, parameters, dictionary)
+    rover_y, rover_x, found_flag = get_aruco_center(cv_image, parameters, dictionary)
 
-    vel_x, vel_y = controller.get_coordinates(rover_x, rover_y)
+    if found_flag:
+        vel_x, vel_y = controller.get_coordinates(rover_x, rover_y)
+    else:
+        vel_x = 0
+        vel_y = 0
 
-    print(rover_x, rover_y, vel_x, vel_y)
+    with open("drone.pos.out", 'a') as file:
+        file.write("{}\t{}\n".format(rover_x, rover_y))
 
     send_vel_drone(vel_x, vel_y)
 
