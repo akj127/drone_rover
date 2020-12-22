@@ -12,10 +12,14 @@ with open("drone.pos.out", 'r') as file:
 		except ValueError:
 			print(line)
 zeros = [0] * len(x)
-
-plt.plot(x, label="x")
-plt.plot(y, label="y")
+plt.figure()
+plt.title("X-coordinate")
+plt.plot(x, ".")
 plt.plot(zeros, "--")
+plt.show()
 
-plt.legend()
+plt.figure()
+plt.title("Y-coordinate")
+plt.plot(y, ".")
+plt.plot(zeros, "--")
 plt.show()
