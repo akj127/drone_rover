@@ -5,7 +5,7 @@ from pymavlink import mavutil  # Needed for command message definitions
 # ROS shit
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
-
+import numpy as np
 import argparse
 import rospy
 import cv2
@@ -24,11 +24,17 @@ dictionary = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_250)
 # Initialize the detector parameters using default values
 parameters = cv2.aruco.DetectorParameters_create()
 
-controller = Controller(ki=0.002, kp=0.003)
+controller = Controller(ki=0.005, kp=0.05)
 
+# camera calibration
+calib_path = ""
+camera_matrix = np.loadtxt(calib_path+'cameraMatrix_webcam.txt', delimiter=',')
+camera_distortion = np.loadtxt(calib_path+'cameraDistortion_webcam.txt', delimiter=',')
 
 def get_aruco_center(cv_image, parameters, dictionary):
     image_shape = cv_image.shape
+    marker_size = 10
+    
 
     center_x = image_shape[1] / 2
     center_y = image_shape[0] / 2
@@ -38,16 +44,30 @@ def get_aruco_center(cv_image, parameters, dictionary):
     found_flag = False
 
     try:
-        bottom_left_corner = tuple(markerCorners[0][0][0])
-        top_right_corner = tuple(markerCorners[0][0][2])
+        # bottom_left_corner = tuple(markerCorners[0][0][0])
+        # top_right_corner = tuple(markerCorners[0][0][2])
 
-        rover_x = (bottom_left_corner[0] + top_right_corner[0]) / 2
-        rover_y = (bottom_left_corner[1] + top_right_corner[1]) / 2
+        # rover_x = (bottom_left_corner[0] + top_right_corner[0]) / 2
+        # rover_y = (bottom_left_corner[1] + top_right_corner[1]) / 2
 
-        rover_x = center_x - rover_x
-        rover_y = center_y - rover_y
+        # rover_x = center_x - rover_x
+        # rover_y = center_y - rover_y
+        ret = cv2.aruco.estimatePoseSingleMarkers(markerCorners, marker_size, camera_matrix, camera_distortion)
+        if markerIds is not None:
+            #-- Unpack the output, get only the first
+            rvec, tvec = ret[0][0,0,:], ret[1][0,0,:]
+            str_position = "MARKER Position x=%4.0f  y=%4.0f  z=%4.0f"%(tvec[0], tvec[1], tvec[2])
+            print(str_position)
+            rover_x = tvec[0]
+            rover_y = tvec[1]
+            # print(str_position)
+            found_flag = True
+        else:
+            print("Out of range!!")
+            rover_x = 5000
+            rover_y = 5000
 
-        found_flag = True
+            found_flag = False    
     except IndexError:
         print("Out of range!!")
         rover_x = 5000
@@ -55,7 +75,8 @@ def get_aruco_center(cv_image, parameters, dictionary):
 
         found_flag = False
 
-    rover_x = -1 * rover_x
+    # rover_x = -1 * rover_x
+    rover_y = -1 * rover_y
 
     return rover_x, rover_y, found_flag
 
@@ -122,7 +143,7 @@ if __name__ == "__main__":
     vehicle = connect(connection_string, wait_ready=True)
 
     # Arm and take of to altitude of 5 meters
-    arm_and_takeoff(vehicle, 10)
+    arm_and_takeoff(vehicle, 5)
 
     listener()
     rospy.spin()
