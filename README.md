@@ -90,3 +90,5 @@ In a new terminal (python 3.5+)
 cd ~/catkin_ws/src/drone_rover/dronekit/
 python3 plot_error.py
 ```
+
+A video of the working model can be viewed [here](https://drive.google.com/file/d/1r6nYN1DXsAyW7EYEOQ98cWlHyjaJBHHt/view?usp=sharing)
