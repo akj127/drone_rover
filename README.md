@@ -69,3 +69,24 @@ open new terminal,
 ```bash
 sim_vehicle.py -v ArduCopter -f gazebo-iris --console --map
 ```
+
+## Start Tracking
+In a new terminal (python 2.7) \\
+The ports are generally either `14550` or `14551`.
+```bash
+cd ~/catkin_ws/src/drone_rover/dronekit/
+python drone_move.py --connect 127.0.0.1:14550
+```
+
+## To view the Tracking
+In a new terminal 
+```bash
+rqt
+```
+
+## Plotting the Errors
+In a new terminal (python 3.5+)
+```bash
+cd ~/catkin_ws/src/drone_rover/dronekit/
+python3 plot_error.py
+```
