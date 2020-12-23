@@ -54,7 +54,10 @@ sudo cp ~/catkin_ws/src/Robotics-project/models/tagged_husky/husky.urdf.xacro $(
 
 Model taken from [here](https://github.com/mzahana/mavros_apriltag_tracking)
 
-## Initiate animation in gazebo
+
+## How to Run
+
+### 1. Initiate animation in gazebo
 
 Open a new terminal and enter following command,
 
@@ -70,7 +73,7 @@ open new terminal,
 sim_vehicle.py -v ArduCopter -f gazebo-iris --console --map
 ```
 
-## Start Tracking
+### 2. Start Tracking
 In a new terminal (python 2.7)\
 The ports are generally either `14550` or `14551`.
 ```bash
@@ -78,11 +81,20 @@ cd ~/catkin_ws/src/drone_rover/dronekit/
 python drone_move.py --connect 127.0.0.1:14550
 ```
 
-## To view the Tracking
+### 3. To view the Tracking
 In a new terminal 
 ```bash
 rqt
 ```
+
+**Alternatively you can run the script below to execute all the 3 steps**
+```bash
+cd ~/catkin_ws/src/drone_rover/
+bash run.sh
+```
+
+Note: If image is not appearing in rqt go into Plugins -> Visualization -> Image View\
+For steering the rover: Plugins -> Robot Tools -> Robot Steering
 
 ## Plotting the Errors
 In a new terminal (python 3.5+)
