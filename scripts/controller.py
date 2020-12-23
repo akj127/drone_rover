@@ -16,8 +16,6 @@ class controller:
 
 	def get_coordinates(self,t):
 	
-	 
-
 		ex = self.xr-self.xd
         	ey = self.yr-self.yd
 
